@@ -35,15 +35,23 @@ LABEL name="Micro-service name"
 LABEL description="Micro-service description"
 
 # Environment vars
+ENV GOMU_APP_BIN="micro-service-binary"
 ENV GOMU_PORT="8080"
 ENV GOMU_VOLUME_DATA="/var/lib/micro-service_name/data"
+ENV GOMU_VOLUME_SSL="/var/lib/micro-service_name/ssl"
 ENV GOMU_URL_ENDPOINT="/micro-service-name/v1/"
 
-# Volumes
-VOLUME [ ${GOMU_VOLUME_DATA} ]
+# Copy entrypoint script & binary
+COPY ./container-entrypoint ./
+COPY ./${GOMU_APP_BIN} /bin
 
 # Make directories
 RUN mkdir -p ${GOMU_VOLUME_DATA}
+RUN mkdir -p ${GOMU_VOLUME_SSL}
+
+# Volumes
+VOLUME [ ${GOMU_VOLUME_DATA} ]
+VOLUME [ ${GOMU_VOLUME_SSL} ]
 
 # Healthcheck
 HEALTHCHECK --interval=1m --timeout=5s --start-period=20s --retries=3 CMD [ "curl -X GET http://localhost:${GOMU_PORT}${GOMU_URL_ENDPOINT}/health || exit 1" ]
@@ -55,4 +63,4 @@ EXPOSE 8080
 ENTRYPOINT [ "./container-entrypoint.sh" ]
 
 # Run container, modify by the golang compiled binary name
-CMD [ "../micro-service-binary" ]
+CMD [ ${GOMU_APP_BIN} ]
