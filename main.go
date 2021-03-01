@@ -23,5 +23,21 @@
 package main
 
 func main() {
-	
+	// Parse micro-service execution flags
+
+	// Initialize logging facility
+
+	// Initialize router
+
+	// Create & setup view
+
+	// Create & setup controllers
+
+	// Register controllers to router
+
+	// Handle routes & allowed methods
+
+	// Use middlewares
+
+	// Serve HTTP & HTTPS
 }
