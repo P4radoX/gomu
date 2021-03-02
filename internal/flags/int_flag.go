@@ -24,6 +24,8 @@ package flags
 type IntFlag struct {
 	Name string
 	Description string
+	MustBeUnique bool
+	MustBeSet bool
 	Value *int
 }
 

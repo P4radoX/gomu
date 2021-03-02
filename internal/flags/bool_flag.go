@@ -24,6 +24,8 @@ package flags
 type BoolFlag struct {
 	Name string
 	Description string
+	MustBeUnique bool
+	MustBeSet bool
 	Value *bool
 }
 
