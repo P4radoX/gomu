@@ -20,7 +20,7 @@
 
 package flags
 
-// Flag interface
+// Flag interface implemented by application flags
 type Flag interface {
 	Parsed() bool
 }

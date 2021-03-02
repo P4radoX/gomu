@@ -20,14 +20,14 @@
 
 package flags
 
-// BoolFlag struct
+// BoolFlag struct represents a bool typed application flag
 type BoolFlag struct {
 	Name string
 	Description string
 	Value *bool
 }
 
-// Parsed method
+// Parsed method returns if the flag has been parsed or not
 func (flg *BoolFlag) Parsed() bool {
 	if flg.Value != nil {
 		return true
