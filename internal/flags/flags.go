@@ -34,3 +34,9 @@ type FlagSet struct {
 	usage func()
 	flags map[string]Flag
 }
+
+// AddFlag method stores a new flag in FlagSet's collection
+// The flag can be accessible by using Get method
+func (fs *FlagSet) AddFlag(flg Flag) {
+	fs.flags[flg.Name()] = flg
+}
