@@ -47,3 +47,13 @@ func (flg *BoolFlag) IsUnique() bool {
 func (flg *BoolFlag) IsRequired() bool {
 	return flg.MustBeSet
 }
+
+// Who method returns the flag name
+func (flg *BoolFlag) Who() string {
+	return flg.Name
+}
+
+// Type method returns the flag type
+func (flg *BoolFlag) Type() int {
+	return FLAGBOOL
+}
