@@ -25,6 +25,7 @@ type Flag interface {
 	Parsed() bool
 	IsUnique() bool
 	IsRequired() bool
+	Name() string
 }
 
 // FlagSet struct represents the flags handler.
