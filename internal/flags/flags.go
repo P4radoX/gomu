@@ -46,9 +46,9 @@ func NewFlagSet() *FlagSet {
 	}
 }
 
-// AddFlag method stores a new flag in FlagSet's collection
+// Add method stores a new flag in FlagSet's collection
 // The flag can be accessible by using Get method
-func (fs *FlagSet) AddFlag(flg Flag) {
+func (fs *FlagSet) Add(flg Flag) {
 	fs.flags[flg.Name()] = flg
 }
 
