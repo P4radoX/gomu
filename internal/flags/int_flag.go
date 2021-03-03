@@ -37,3 +37,13 @@ func (flg *IntFlag) Parsed() bool {
 
 	return false
 }
+
+// IsUnique method returns if the flag must be unique or not when the binary is executed
+func (flg *IntFlag) IsUnique() bool {
+	return flg.MustBeUnique
+}
+
+// IsRequired method returns if the flag is required or not when the binary is executed
+func (flg *IntFlag) IsRequired() bool {
+	return flg.MustBeSet
+}
