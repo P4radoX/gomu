@@ -31,5 +31,5 @@ type Flag interface {
 type FlagSet struct {
 	MinArgs int
 	usage func()
-	Flags []Flag
+	flags []Flag
 }
