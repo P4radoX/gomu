@@ -20,12 +20,26 @@
 
 package flags
 
+import (
+	"flag"
+	"os"
+)
+
+// FlagType enumeration
+const (
+	UNKNOWN int = iota
+	FLAGBOOL
+	FLAGINT
+	FLAGSTRING
+)
+
 // Flag interface implemented by application flags
 type Flag interface {
 	Parsed() bool
 	IsUnique() bool
 	IsRequired() bool
-	Name() string
+	Who() string
+	Type() int
 }
 
 // FlagSet struct represents the flags handler.
@@ -49,7 +63,7 @@ func NewFlagSet() *FlagSet {
 // Add method stores a new flag in FlagSet's collection
 // The flag can be accessible by using Get method
 func (fs *FlagSet) Add(flg Flag) {
-	fs.flags[flg.Name()] = flg
+	fs.flags[flg.Who()] = flg
 }
 
 // Get method returns the Flag interface associated to his name from the FlagSet collection.
@@ -57,4 +71,35 @@ func (fs *FlagSet) Add(flg Flag) {
 // If a key doesn't exists, the returned interface will be nil
 func (fs *FlagSet) Get(flagName string) Flag {
 	return fs.flags[flagName]
+}
+
+// Parse method
+func (fs *FlagSet) Parse() {
+	// Set usage
+	flag.Usage = fs.usage
+	
+	// Declare flags
+	for k,v := range fs.flags {
+		switch v.Type() {
+		case FLAGBOOL:
+			flag.BoolVar(v.(*BoolFlag).Value, k, false, v.(*BoolFlag).Description)
+		case FLAGINT:
+			flag.IntVar(v.(*IntFlag).Value, k, 0, v.(*IntFlag).Description)
+		case FLAGSTRING:
+			flag.StringVar(v.(*StringFlag).Value, k, "", v.(*StringFlag).Description)
+		default:
+			// Handle non-typed flag
+		}
+	}
+
+	// Parse
+	flag.Parse()
+
+	// Check min args
+	if fs.MinArgs > 0 {
+		if len(os.Args) < fs.MinArgs {
+			flag.Usage()
+			os.Exit(2)
+		}
+	}
 }
