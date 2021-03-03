@@ -26,3 +26,10 @@ type Flag interface {
 	IsUnique() bool
 	IsRequired() bool
 }
+
+// FlagSet struct represents the flags handler.
+type FlagSet struct {
+	MinArgs int
+	usage func()
+	Flags []Flag
+}
