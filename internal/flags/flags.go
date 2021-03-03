@@ -29,6 +29,8 @@ type Flag interface {
 }
 
 // FlagSet struct represents the flags handler.
+//
+// It must be initialized with the NewFlagSet constructor.
 type FlagSet struct {
 	MinArgs int
 	usage func()
