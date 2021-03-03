@@ -23,4 +23,6 @@ package flags
 // Flag interface implemented by application flags
 type Flag interface {
 	Parsed() bool
+	IsUnique() bool
+	IsRequired() bool
 }
