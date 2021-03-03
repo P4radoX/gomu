@@ -37,6 +37,15 @@ type FlagSet struct {
 	flags map[string]Flag
 }
 
+// NewFlagSet function is the FlagSet struct constructor.
+//
+// It returns a FlagSet struct pointer with the initialized collection
+func NewFlagSet() *FlagSet {
+	return &FlagSet{
+		flags: make(map[string]Flag),
+	}
+}
+
 // AddFlag method stores a new flag in FlagSet's collection
 // The flag can be accessible by using Get method
 func (fs *FlagSet) AddFlag(flg Flag) {
