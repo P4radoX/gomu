@@ -40,3 +40,10 @@ type FlagSet struct {
 func (fs *FlagSet) AddFlag(flg Flag) {
 	fs.flags[flg.Name()] = flg
 }
+
+// Get method returns the Flag interface associated to his name from the FlagSet collection.
+//
+// If a key doesn't exists, the returned interface will be nil
+func (fs *FlagSet) Get(flagName string) Flag {
+	return fs.flags[flagName]
+}
