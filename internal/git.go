@@ -21,3 +21,18 @@
 // SOFTWARE.
 
 package internal
+
+import (
+	"fmt"
+	"os/exec"
+)
+
+// execw function executes a command with arguments, waits it to complete then returns the
+// command output and error if any.
+func execw(name string, args ...string) (string, error) {
+	cmd := exec.Command(name, args...)
+
+	output, err := cmd.Output()
+
+	return fmt.Sprintf("%v", output), err
+}
