@@ -19,3 +19,41 @@
 // SOFTWARE.
 
 package internal
+
+import (
+	"time"
+
+	log "github.com/sirupsen/logrus"
+)
+
+// NewLogger function returns a new logging instance with the given
+// format (JSON or Text) and default level.
+func NewLogger(format string, level log.Level) *log.Logger {
+	fieldmap := log.FieldMap{
+		log.FieldKeyTime:  "@timestamp",
+		log.FieldKeyLevel: "@level",
+		log.FieldKeyMsg:   "@message",
+		log.FieldKeyFunc:  "@caller",
+	}
+
+	logger := &log.Logger{
+		ReportCaller: true,
+		Level:        level,
+	}
+
+	switch format {
+	case "json", "JSON", "Json":
+		logger.Formatter = &log.JSONFormatter{
+			TimestampFormat: time.RFC3339,
+			FieldMap: fieldmap,
+		}
+	default:
+		logger.Formatter = &log.TextFormatter{
+			TimestampFormat: time.RFC3339,
+			DisableLevelTruncation: true,
+			FieldMap: fieldmap,
+		}
+	}
+
+	return logger
+}
