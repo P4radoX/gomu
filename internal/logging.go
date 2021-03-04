@@ -21,6 +21,7 @@
 package internal
 
 import (
+	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -37,6 +38,7 @@ func NewLogger(format string, level log.Level) *log.Logger {
 	}
 
 	logger := &log.Logger{
+		Out: os.Stderr,
 		ReportCaller: true,
 		Level:        level,
 	}
