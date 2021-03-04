@@ -19,3 +19,11 @@
 // SOFTWARE.
 
 package views
+
+// View interface must be implemented by all micro-service views
+//
+// Path method returns the view sub-endpoint and Methods the HTTP bind methods
+type View interface {
+	Path() string
+	Methods() []string
+}
