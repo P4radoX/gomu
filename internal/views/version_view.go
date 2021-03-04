@@ -19,3 +19,27 @@
 // SOFTWARE.
 
 package views
+
+// VersionView struct represents the /version sub-endpoint
+type VersionView struct {
+	path string
+	methods []string
+}
+
+// Path method returns the view path
+func (v *VersionView) Path() string {
+	return v.path
+}
+
+// Methods method returns the view bind methods
+func (v *VersionView) Methods() []string {
+	return v.methods
+}
+
+// NewVersionView function returns a new VersionView struct pointer
+func NewVersionView(path string, methods ...string) *VersionView {
+	return &VersionView{
+		path: path,
+		methods: methods,
+	}
+}
