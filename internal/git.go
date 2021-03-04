@@ -48,3 +48,14 @@ func GetCommitID() string {
 
 	return strings.Split(output, " ")[0]
 }
+
+// GetTagID function returns the
+func GetTagID() string {
+	output, err := execw("bash", ".extras/githelper.sh")
+
+	if err != nil {
+		return ""
+	}
+
+	return strings.Split(output, " ")[1]
+}
