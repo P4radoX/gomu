@@ -26,12 +26,12 @@ type IntFlag struct {
 	Description string
 	MustBeUnique bool
 	MustBeSet bool
-	Value *int
+	Value int
 }
 
 // Parsed method returns if the flag has been parsed or not
 func (flg *IntFlag) Parsed() bool {
-	if flg.Value != nil {
+	if flg.Value != 0 {
 		return true
 	}
 
