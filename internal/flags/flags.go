@@ -22,7 +22,9 @@ package flags
 
 import (
 	"flag"
+	"fmt"
 	"os"
+	"strings"
 )
 
 // FlagType enumeration
@@ -42,12 +44,32 @@ type Flag interface {
 	Type() int
 }
 
+// Usage function is the default usage message set at FlagSet.Parse() time
+func Usage(flags ...Flag) func() {
+	msg := fmt.Sprintf("%s\n\nUsage:\n", strings.TrimPrefix(os.Args[0], "./"))
+
+	for _, flag := range flags {
+		switch flag.Type() {
+		case FLAGBOOL:
+			msg += fmt.Sprintf("\t-%s {%s}:\t%s\n", flag.Who(), "bool", flag.(*BoolFlag).Description)
+		case FLAGINT:
+			msg += fmt.Sprintf("\t-%s {%s}:\t%s\n", flag.Who(), "int", flag.(*IntFlag).Description)
+		case FLAGSTRING:
+			msg += fmt.Sprintf("\t-%s {%s}:\t%s\n", flag.Who(), "string", flag.(*StringFlag).Description)
+		default:
+		}
+	}
+
+	msg += "\t-help, --help:\tDisplays this message\n\n"
+
+	return func() {fmt.Fprintf(os.Stdout, msg)}
+}
+
 // FlagSet struct represents the flags handler.
 //
 // It must be initialized with the NewFlagSet constructor.
 type FlagSet struct {
 	MinArgs int
-	usage func()
 	flags map[string]Flag
 }
 
@@ -76,17 +98,17 @@ func (fs *FlagSet) Get(flagName string) Flag {
 // Parse method
 func (fs *FlagSet) Parse() {
 	// Set usage
-	flag.Usage = fs.usage
+	flag.Usage = Usage(fs.Flags()...)
 	
 	// Declare flags
 	for k,v := range fs.flags {
 		switch v.Type() {
 		case FLAGBOOL:
-			flag.BoolVar(v.(*BoolFlag).Value, k, false, v.(*BoolFlag).Description)
+			flag.BoolVar(&v.(*BoolFlag).Value, k, false, v.(*BoolFlag).Description)
 		case FLAGINT:
-			flag.IntVar(v.(*IntFlag).Value, k, 0, v.(*IntFlag).Description)
+			flag.IntVar(&v.(*IntFlag).Value, k, 0, v.(*IntFlag).Description)
 		case FLAGSTRING:
-			flag.StringVar(v.(*StringFlag).Value, k, "", v.(*StringFlag).Description)
+			flag.StringVar(&v.(*StringFlag).Value, k, "", v.(*StringFlag).Description)
 		default:
 			// Handle non-typed flag
 		}
@@ -102,4 +124,13 @@ func (fs *FlagSet) Parse() {
 			os.Exit(2)
 		}
 	}
+}
+
+// Flags method returns all registered flags as a Flag interface slice
+func (fs *FlagSet) Flags() (lst []Flag) {
+	for _, flag := range fs.flags {
+		lst = append(lst, flag)
+	}
+
+	return
 }
