@@ -26,16 +26,12 @@ type BoolFlag struct {
 	Description string
 	MustBeUnique bool
 	MustBeSet bool
-	Value *bool
+	Value bool
 }
 
 // Parsed method returns if the flag has been parsed or not
 func (flg *BoolFlag) Parsed() bool {
-	if flg.Value != nil {
-		return true
-	}
-
-	return false
+	return flg.Value
 }
 
 // IsUnique method returns if the flag must be unique or not when the binary is executed
