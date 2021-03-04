@@ -25,6 +25,7 @@ package internal
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
 // execw function executes a command with arguments, waits it to complete then returns the
@@ -35,4 +36,15 @@ func execw(name string, args ...string) (string, error) {
 	output, err := cmd.Output()
 
 	return fmt.Sprintf("%v", output), err
+}
+
+// GetCommitID function returns the
+func GetCommitID() string {
+	output, err := execw("bash", ".extras/githelper.sh")
+
+	if err != nil {
+		return ""
+	}
+
+	return strings.Split(output, " ")[0]
 }
