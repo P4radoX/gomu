@@ -109,11 +109,11 @@ func (fs *FlagSet) Parse() {
 	for k,v := range fs.flags {
 		switch v.Type() {
 		case FLAGBOOL:
-			flag.BoolVar(&v.(*BoolFlag).Value, k, false, v.(*BoolFlag).Description)
+			flag.BoolVar(&v.(*BoolFlag).Value, k, v.(*BoolFlag).Value, v.(*BoolFlag).Description)
 		case FLAGINT:
-			flag.IntVar(&v.(*IntFlag).Value, k, 0, v.(*IntFlag).Description)
+			flag.IntVar(&v.(*IntFlag).Value, k, v.(*IntFlag).Value, v.(*IntFlag).Description)
 		case FLAGSTRING:
-			flag.StringVar(&v.(*StringFlag).Value, k, "", v.(*StringFlag).Description)
+			flag.StringVar(&v.(*StringFlag).Value, k, v.(*StringFlag).Value, v.(*StringFlag).Description)
 		default:
 			// Handle non-typed flag
 		}
