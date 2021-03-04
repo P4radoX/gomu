@@ -51,16 +51,16 @@ func Usage(flags ...Flag) func() {
 	for _, flag := range flags {
 		switch flag.Type() {
 		case FLAGBOOL:
-			msg += fmt.Sprintf("\t-%s {%s}:\t%s\n", flag.Who(), "bool", flag.(*BoolFlag).Description)
+			msg += fmt.Sprintf("\t-%s {%s}:\t\t%s\n", flag.Who(), "bool", flag.(*BoolFlag).Description)
 		case FLAGINT:
-			msg += fmt.Sprintf("\t-%s {%s}:\t%s\n", flag.Who(), "int", flag.(*IntFlag).Description)
+			msg += fmt.Sprintf("\t-%s {%s}:\t\t%s\n", flag.Who(), "int", flag.(*IntFlag).Description)
 		case FLAGSTRING:
-			msg += fmt.Sprintf("\t-%s {%s}:\t%s\n", flag.Who(), "string", flag.(*StringFlag).Description)
+			msg += fmt.Sprintf("\t-%s {%s}:\t\t%s\n", flag.Who(), "string", flag.(*StringFlag).Description)
 		default:
 		}
 	}
 
-	msg += "\t-help, --help:\tDisplays this message\n\n"
+	msg += "\t-help, --help:\t\tDisplays this message\n\n"
 
 	return func() {fmt.Fprintf(os.Stdout, msg)}
 }
