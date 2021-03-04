@@ -19,3 +19,25 @@
 // SOFTWARE.
 
 package controllers
+
+import (
+	"fmt"
+	"net/http"
+)
+
+// HealthController struct represents the /health controller
+type HealthController struct{}
+
+// NewHealthController function returns a new HealthController struct pointer
+func NewHealthController() *HealthController {
+	return &HealthController{}
+}
+
+func (ctl *HealthController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("Content-Type", "text/plain")
+
+	w.WriteHeader(http.StatusOK)
+
+	fmt.Fprint(w, "Healthy")
+}
