@@ -19,3 +19,10 @@
 // SOFTWARE.
 
 package controllers
+
+// Controller interface must be implemented by all micro-service controllers
+//
+// The method ServeHTTP let the controller be used with router
+type Controller interface {
+	ServeHTTP()
+}
