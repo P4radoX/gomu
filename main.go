@@ -23,7 +23,9 @@
 package main
 
 import (
+	"github.com/P4radoX/gomu/internal"
 	"github.com/P4radoX/gomu/internal/flags"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -38,6 +40,7 @@ func main() {
 	fs.Parse()
 
 	// Initialize logging facility
+	logger := internal.NewLogger("json", log.InfoLevel)
 
 	// Initialize router
 
@@ -52,4 +55,6 @@ func main() {
 	// Use middlewares
 
 	// Serve HTTP & HTTPS
+
+	logger.Infof("Now serving at %s...", fs.Get("bind").(*flags.StringFlag).Value)
 }
