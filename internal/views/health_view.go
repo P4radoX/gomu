@@ -19,3 +19,27 @@
 // SOFTWARE.
 
 package views
+
+// HealthView struct represents the /health sub-endpoint
+type HealthView struct {
+	path string
+	methods []string
+}
+
+// Path method returns the view path
+func (v *HealthView) Path() string {
+	return v.path
+}
+
+// Methods method returns the view bind methods
+func (v *HealthView) Methods() []string {
+	return v.methods
+}
+
+// NewHealthView function returns a new HealthView struct pointer
+func NewHealthView(path string, methods ...string) *HealthView {
+	return &HealthView{
+		path: path,
+		methods: methods,
+	}
+}
