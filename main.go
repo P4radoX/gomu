@@ -22,8 +22,20 @@
 
 package main
 
+import (
+	"github.com/P4radoX/gomu/internal/flags"
+)
+
 func main() {
 	// Parse micro-service execution flags
+	fs := flags.NewFlagSet()
+
+	fs.Add(
+		&flags.StringFlag{Name: "bind", Description: "Specify the service addr:port bind", MustBeSet: true, Value: "0.0.0.0:8080"},
+		&flags.StringFlag{Name: "endpoint", Description: "Specify the service endpoint URL like /service/v1", MustBeSet: true, Value: ""},
+	)
+
+	fs.Parse()
 
 	// Initialize logging facility
 
