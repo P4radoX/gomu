@@ -26,12 +26,12 @@ type StringFlag struct {
 	Description string
 	MustBeUnique bool
 	MustBeSet bool
-	Value *string
+	Value string
 }
 
 // Parsed method returns if the flag has been parsed or not
 func (flg *StringFlag) Parsed() bool {
-	if flg.Value != nil {
+	if flg.Value != "" {
 		return true
 	}
 
