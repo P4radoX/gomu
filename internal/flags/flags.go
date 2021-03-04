@@ -82,10 +82,15 @@ func NewFlagSet() *FlagSet {
 	}
 }
 
-// Add method stores a new flag in FlagSet's collection
+// Add method stores severals new flag in FlagSet's collection.
+// If a flag already exists, it will be simply discarded.
 // The flag can be accessible by using Get method
-func (fs *FlagSet) Add(flg Flag) {
-	fs.flags[flg.Who()] = flg
+func (fs *FlagSet) Add(flags ...Flag) {
+	for _, flag := range flags {
+		if _, ok := fs.flags[flag.Who()]; !ok {
+			fs.flags[flag.Who()] = flag
+		}
+	}
 }
 
 // Get method returns the Flag interface associated to his name from the FlagSet collection.
