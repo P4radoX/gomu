@@ -21,37 +21,40 @@
 package errors
 
 // UnknownError describes an unexpected error
-type UnknownError error
+var UnknownError error
 
 // SystemNotFoundError describes a filesystem error when OS can't found requested file or directory
-type SystemNotFoundError error
+var SystemNotFoundError error
 
 // SystemIsDirectoryError describes an unauthorized I/O operation on a directory
-type SystemIsDirectoryError error
+var SystemIsDirectoryError error
 
 // SystemIOError describes an I/O operation error
-type SystemIOError error
+var SystemIOError error
 
 // SystemUnexpectedEOFError describes an unexpected EOF while making I/O operations
-type SystemUnexpectedEOFError error
+var SystemUnexpectedEOFError error
 
 // NetTCPSocketError describes a TCP socket error
-type NetTCPSocketError error
+var NetTCPSocketError error
 
 // NetUDPSocketError describes an UDP socket error
-type NetUDPSocketError error
+var NetUDPSocketError error
 
 // NetUnixSocketError describes an Unix socket error
-type NetUnixSocketError error
+var NetUnixSocketError error
 
 // NetServerDialError describes a failed server connection
-type NetServerDialError error
+var NetServerDialError error
 
 // DatabaseRequestError describes a failed or bad database request 
-type DatabaseRequestError error
+var DatabaseRequestError error
 
 // HTTPBadRequestQueryError describes a bad URL query request
-type HTTPBadRequestQueryError error
+var HTTPBadRequestQueryError error
+
+// HTTPMIMETypeError describes a malformed or bad MIME type error
+var HTTPMIMETypeError error
 
 // JSONMarshalError describes a JSON marshalling/unmarshalling error
-type JSONMarshalError error
+var JSONMarshalError error
