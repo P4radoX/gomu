@@ -21,18 +21,35 @@
 package middlewares
 
 import (
+	"mime"
 	"net/http"
+
+	ierrors "github.com/P4radoX/gomu/internal/errors"
+	"github.com/pkg/errors"
 )
 
 // MIMEMiddleware middleware function enforces MIME type from Content-Type header and prevents
 // sending requests with non-desired types
 func MIMEMiddleware(mimeType string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Pre-logic goes here
+		if r.Header.Get("Content-Type") != "" {
+			mtype, _, err := mime.ParseMediaType(mimeType)
+
+			// Malformed MIME type
+			if err != nil {
+				http.Error(w, errors.Wrap(ierrors.HTTPMIMETypeError, "Corrupted Content-Type header").Error(), http.StatusBadRequest)
+
+				return
+			}
+
+			// Not matching MIME type
+			if mtype != mimeType {
+				http.Error(w, errors.Wrap(ierrors.HTTPMIMETypeError, "Unsupported Content-Type header value").Error(), http.StatusUnsupportedMediaType)
+
+				return
+			}
+		}
 
 		next.ServeHTTP(w, r)
-
-		// After-logic goes here
-
 	})
 }
