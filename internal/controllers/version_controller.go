@@ -55,7 +55,7 @@ func (ctl *VersionController) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 
 	// Write HTTP headers
 	w.Header().Set("X-Content-Type-Options", "nosniff")
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
 	// Write HTTP response status
 	w.WriteHeader(http.StatusOK)

@@ -41,7 +41,7 @@ func (ctl *HealthController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	
 	// Write HTTP headers
 	w.Header().Set("X-Content-Type-Options", "nosniff")
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 
 	// Write HTTP response status
 	w.WriteHeader(http.StatusOK)
