@@ -26,9 +26,9 @@ import (
 	"net/http"
 
 	"github.com/P4radoX/gomu/internal"
-	"github.com/P4radoX/gomu/internal/controllers"
+	ctl "github.com/P4radoX/gomu/internal/controllers"
 	"github.com/P4radoX/gomu/internal/flags"
-	"github.com/P4radoX/gomu/internal/middlewares"
+	mdw "github.com/P4radoX/gomu/internal/middlewares"
 	"github.com/P4radoX/gomu/internal/views"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
@@ -56,8 +56,8 @@ func main() {
 	versionView := views.NewVersionView("/version", http.MethodGet)
 
 	// Create & setup controllers
-	healthController := controllers.NewHealthController()
-	versionController := controllers.NewVersionController(
+	healthController := ctl.NewHealthController()
+	versionController := ctl.NewVersionController(
 		"Gomu",
 		"P4radoX",
 		"Github",
@@ -67,8 +67,8 @@ func main() {
 	)
 
 	// Register controllers to router with middlewares
-	R.Handle(healthView.Path(), middlewares.LoggingMiddleware(logger, healthController)).Methods(healthView.Methods()...)
-	R.Handle(versionView.Path(), middlewares.LoggingMiddleware(logger, versionController)).Methods(versionView.Methods()...)
+	R.Handle(healthView.Path(), mdw.LoggingMiddleware(logger, healthController)).Methods(healthView.Methods()...)
+	R.Handle(versionView.Path(), mdw.LoggingMiddleware(logger, versionController)).Methods(versionView.Methods()...)
 
 	// Serve HTTP & HTTPS
 	bind := fs.Get("bind").(*flags.StringFlag).Value
