@@ -19,3 +19,30 @@
 // SOFTWARE.
 
 package middlewares
+
+import (
+	"net/http"
+	"time"
+
+	log "github.com/sirupsen/logrus"
+)
+
+// LoggingMiddleware middleware function logs every service request
+func LoggingMiddleware(logger *log.Logger, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		wrw := wrapResponseWriter(w)
+
+		start := time.Now()
+		next.ServeHTTP(wrw, r)
+		t := time.Now()
+
+		logger.WithFields(log.Fields{
+			"@protocol_version": r.Proto,
+			"@method":           r.Method,
+			"@request_uri":      r.URL.EscapedPath(),
+			"@remote_addr":      r.RemoteAddr,
+			"@status":           wrw.Status(),
+			"@duration":         t.Sub(start).Milliseconds(),
+		}).Info("New incoming service request")
+	})
+}
