@@ -19,3 +19,37 @@
 // SOFTWARE.
 
 package middlewares
+
+import "net/http"
+
+// wrappedResponseWriter struct represents a wrapped http.ResponseWriter interface
+// It can be used to get the status code after the service has wrote a response.
+// Otherwise, use directly the middleware http.ResponseWriter
+type wrappedResponseWriter struct {
+	http.ResponseWriter
+	status         int
+	hasWroteHeader bool
+}
+
+// wrapResponseWriter wraps an http.ResponseWriter and returns a new wrappedResponseWriter struct pointer
+func wrapResponseWriter(w http.ResponseWriter) *wrappedResponseWriter {
+	return &wrappedResponseWriter{ResponseWriter: w}
+}
+
+// Status method returns the wrapped http.ResponseWriter status code
+func (wrw *wrappedResponseWriter) Status() int {
+	return wrw.status
+}
+
+// WriteHeader method satisfy http.ResponseWriter interface
+func (wrw *wrappedResponseWriter) WriteHeader(code int) {
+	if wrw.hasWroteHeader {
+		return
+	}
+
+	wrw.status = code
+	wrw.ResponseWriter.WriteHeader(code)
+	wrw.hasWroteHeader = true
+
+	return
+}
