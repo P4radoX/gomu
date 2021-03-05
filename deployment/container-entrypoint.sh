@@ -22,6 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# # # # # # # # #
+
+# NOTE: This script allows the application in the container to receive any UNIX signals and
+#       arguments at container execution. The application will be started with PID 1.
+#       See: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#entrypoint
+
 set -e
 
 # Add some logic here, like user specific execution
