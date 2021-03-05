@@ -23,9 +23,14 @@
 # SOFTWARE.
 
 # Vars
-GIT_HEAD_COMMIT_ID=`git log --format="%H" -n 1`
 GIT_HEAD_TAG_VERSION=`git tag -l | head`
 
-echo "$GIT_HEAD_COMMIT_ID $GIT_HEAD_TAG_VERSION"
+if [[ -z $GIT_HEAD_TAG_VERSION ]]; then
+    GIT_HEAD_COMMIT_ID=`git show --format="%H" -n 1 -s`
+    echo -e "{\"Tag:\":\"v0.0.0-$GIT_HEAD_COMMIT_ID\",\"Commit\":\"$GIT_HEAD_COMMIT_ID\"}"
+else
+    GIT_HEAD_COMMIT_ID=`git show $GIT_HEAD_TAG_VERSION --format="%H" -n 1 -s`
+    echo -e "{\"Tag\":\"$GIT_HEAD_TAG_VERSION\",\"Commit\":\"$GIT_HEAD_COMMIT_ID\"}"
+fi
 
 exit 0
