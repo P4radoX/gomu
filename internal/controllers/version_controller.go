@@ -19,3 +19,49 @@
 // SOFTWARE.
 
 package controllers
+
+import (
+	"fmt"
+	"net/http"
+)
+
+// VersionController struct represents the /version sub-endpoint controller
+type VersionController struct {
+	Name       string
+	Maintainer string
+	Provider   string
+	Tag        string
+	Commit     string
+	URL        string
+}
+
+// NewVersionController function returns a new VersionController struct pointer
+func NewVersionController(name, maintainer, provider, tag, commit, url string) *VersionController {
+	return &VersionController{
+		Name:       name,
+		Maintainer: maintainer,
+		Provider:   provider,
+		Tag:        tag,
+		Commit:     commit,
+		URL:        url,
+	}
+}
+
+func (ctl *VersionController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Check method
+	if !CheckMethod(http.MethodGet, w, r) {
+		return
+	}
+
+	// Write HTTP headers
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write HTTP response status
+	w.WriteHeader(http.StatusOK)
+
+	// Write payload
+	w.Write([]byte(
+		fmt.Sprintf("{\"name\":\"%s\", \"maintainer\":\"%s\", \"provider\":\"%s\", \"tag\":\"%s\", \"commit\":\"%s\", \"url\":\"%s\"}", ctl.Name, ctl.Maintainer, ctl.Provider, ctl.Tag, ctl.Commit, ctl.URL),
+	))
+}
