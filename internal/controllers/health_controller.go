@@ -34,10 +34,18 @@ func NewHealthController() *HealthController {
 }
 
 func (ctl *HealthController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Check method
+	if !CheckMethod(http.MethodGet, w, r) {
+		return
+	}
+	
+	// Write HTTP headers
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("Content-Type", "text/plain")
 
+	// Write HTTP response status
 	w.WriteHeader(http.StatusOK)
 
+	// Write payload
 	fmt.Fprint(w, "Healthy")
 }
