@@ -23,8 +23,13 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/P4radoX/gomu/internal"
+	"github.com/P4radoX/gomu/internal/controllers"
 	"github.com/P4radoX/gomu/internal/flags"
+	"github.com/P4radoX/gomu/internal/views"
+	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -34,7 +39,7 @@ func main() {
 
 	fs.Add(
 		&flags.StringFlag{Name: "bind", Description: "Specify the service addr:port bind", MustBeSet: true, Value: "0.0.0.0:8080"},
-		&flags.StringFlag{Name: "endpoint", Description: "Specify the service endpoint URL like /service/v1", MustBeSet: true, Value: ""},
+		&flags.StringFlag{Name: "endpoint", Description: "Specify the service endpoint URL like /service/v1", MustBeSet: true, Value: "/app/v1"},
 	)
 
 	fs.Parse()
@@ -43,18 +48,31 @@ func main() {
 	logger := internal.NewLogger("json", log.InfoLevel)
 
 	// Initialize router
+	R := mux.NewRouter().PathPrefix(fs.Get("endpoint").(*flags.StringFlag).Value).Subrouter()
 
 	// Create & setup view
+	healthView := views.NewHealthView("/health", http.MethodGet)
+	versionView := views.NewVersionView("/version", http.MethodGet)
 
 	// Create & setup controllers
+	healthController := controllers.NewHealthController()
+	versionController := controllers.NewVersionController(
+		"Gomu",
+		"P4radoX",
+		"Github",
+		"v0.0.0-01ab7f5f9dcc98fbb584c73248ea48ef9c3fd2ea",
+		"01ab7f5f9dcc98fbb584c73248ea48ef9c3fd2ea",
+		"github.com/P4radoX",
+	)
 
 	// Register controllers to router
-
-	// Handle routes & allowed methods
+	R.Handle(healthView.Path(), healthController).Methods(healthView.Methods()...)
+	R.Handle(versionView.Path(), versionController).Methods(versionView.Methods()...)
 
 	// Use middlewares
 
 	// Serve HTTP & HTTPS
-
-	logger.Infof("Now serving at %s...", fs.Get("bind").(*flags.StringFlag).Value)
+	bind := fs.Get("bind").(*flags.StringFlag).Value
+	logger.Infof("Now serving at %s...", bind)
+	logger.Fatal(http.ListenAndServe(bind, R))
 }
