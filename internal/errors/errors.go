@@ -19,3 +19,39 @@
 // SOFTWARE.
 
 package errors
+
+// UnknownError describes an unexpected error
+type UnknownError error
+
+// SystemNotFoundError describes a filesystem error when OS can't found requested file or directory
+type SystemNotFoundError error
+
+// SystemIsDirectoryError describes an unauthorized I/O operation on a directory
+type SystemIsDirectoryError error
+
+// SystemIOError describes an I/O operation error
+type SystemIOError error
+
+// SystemUnexpectedEOFError describes an unexpected EOF while making I/O operations
+type SystemUnexpectedEOFError error
+
+// NetTCPSocketError describes a TCP socket error
+type NetTCPSocketError error
+
+// NetUDPSocketError describes an UDP socket error
+type NetUDPSocketError error
+
+// NetUnixSocketError describes an Unix socket error
+type NetUnixSocketError error
+
+// NetServerDialError describes a failed server connection
+type NetServerDialError error
+
+// DatabaseRequestError describes a failed or bad database request 
+type DatabaseRequestError error
+
+// HTTPBadRequestQueryError describes a bad URL query request
+type HTTPBadRequestQueryError error
+
+// JSONMarshalError describes a JSON marshalling/unmarshalling error
+type JSONMarshalError error
