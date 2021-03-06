@@ -118,6 +118,18 @@ R.Use(mdw.LoggingMiddleware(logger))
 Each file must contains only one middleware and filename must be prefixed with `wide_` or `ctl_` to mark a visual difference.
 
 #### Models
+Models are simple struct that contains fields with JSON tags to be marshalled/unmarshalled
+
+Each struct must be declared in a unique file in /internal/models
+
+Example:
+```golang
+type Contact struct {
+    Name    string    `json:"name"`
+    Email   string    `json:"email"`
+    Phone   string    `json:"phone"`
+}
+```
 
 #### Views
 
