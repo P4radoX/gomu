@@ -37,14 +37,14 @@ func MIMEMiddleware(mimeType string, next http.Handler) http.Handler {
 
 			// Malformed MIME type
 			if err != nil {
-				http.Error(w, errors.Wrap(ierrors.HTTPMIMETypeError, "Corrupted Content-Type header").Error(), http.StatusBadRequest)
+				http.Error(w, errors.Wrap(ierrors.ErrMIME, "Corrupted Content-Type header").Error(), http.StatusBadRequest)
 
 				return
 			}
 
 			// Not matching MIME type
 			if mtype != mimeType {
-				http.Error(w, errors.Wrap(ierrors.HTTPMIMETypeError, "Unsupported Content-Type header value").Error(), http.StatusUnsupportedMediaType)
+				http.Error(w, errors.Wrap(ierrors.ErrMIME, "Unsupported Content-Type header value").Error(), http.StatusUnsupportedMediaType)
 
 				return
 			}
