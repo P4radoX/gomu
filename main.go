@@ -67,8 +67,8 @@ func main() {
 	)
 
 	// Register controllers to router with middlewares
-	R.Handle(healthView.Path(), mdw.LoggingMiddleware(logger, healthController)).Methods(healthView.Methods()...)
-	R.Handle(versionView.Path(), mdw.LoggingMiddleware(logger, versionController)).Methods(versionView.Methods()...)
+	R.Handle(healthView.Path(), mdw.LoggingMiddleware(logger, mdw.HTTPMethodMiddleware(healthController, healthView.Methods()...)))
+	R.Handle(versionView.Path(), mdw.LoggingMiddleware(logger, mdw.HTTPMethodMiddleware(versionController, versionView.Methods()...)))
 
 	// Serve HTTP & HTTPS
 	bind := fs.Get("bind").(*flags.StringFlag).Value
