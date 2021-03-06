@@ -54,6 +54,22 @@ func (ctl *HealthController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 It's recommended to apply for each controller the `X-Content-Type-Options` HTTP header to prevents MIME type sniffing, for more informations see: [https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options)
 
 #### Flags
+Flags are application execution arguments. The template provides a flag parser to easily add flags.
+
+You can specify a flag name, description, if it must be set or unique. If you want to add custome flag types, just copy/paste an existing `*_flag.go` file and adapt code, also in `FlagSet.Parse()` method.
+
+The `Flag` interface allows arbitrary flags to be parsed at execution time.
+
+```golang
+// Flag interface implemented by application flags
+type Flag interface {
+	Parsed() bool
+	IsUnique() bool
+	IsRequired() bool
+	Who() string
+	Type() int
+}
+```
 
 #### Middlewares
 
