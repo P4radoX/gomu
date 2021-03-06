@@ -20,41 +20,43 @@
 
 package errors
 
-// UnknownError describes an unexpected error
-var UnknownError error
+import "github.com/pkg/errors"
 
-// SystemNotFoundError describes a filesystem error when OS can't found requested file or directory
-var SystemNotFoundError error
+// ErrUnknown describes an unexpected error
+var ErrUnknown = errors.New("unknown error occured")
 
-// SystemIsDirectoryError describes an unauthorized I/O operation on a directory
-var SystemIsDirectoryError error
+// ErrSystemNotFound describes a filesystem error when OS can't found requested file or directory
+var ErrSystemNotFound = errors.New("no such file or directory")
 
-// SystemIOError describes an I/O operation error
-var SystemIOError error
+// ErrSystemIsDirectory describes an unauthorized I/O operation on a directory
+var ErrSystemIsDirectory = errors.New("is a directory")
 
-// SystemUnexpectedEOFError describes an unexpected EOF while making I/O operations
-var SystemUnexpectedEOFError error
+// ErrSystemIO describes an I/O operation error
+var ErrSystemIO = errors.New("unable to perform I/O operation")
 
-// NetTCPSocketError describes a TCP socket error
-var NetTCPSocketError error
+// ErrSystemUnexpectedEOF describes an unexpected EOF while making I/O operations
+var ErrSystemUnexpectedEOF = errors.New("unexpected EOF")
 
-// NetUDPSocketError describes an UDP socket error
-var NetUDPSocketError error
+// ErrNetTCPSocket describes a TCP socket error
+var ErrNetTCPSocket = errors.New("TCP socket error")
 
-// NetUnixSocketError describes an Unix socket error
-var NetUnixSocketError error
+// ErrNetUDPSocket describes an UDP socket error
+var ErrNetUDPSocket = errors.New("UDP socket error")
 
-// NetServerDialError describes a failed server connection
-var NetServerDialError error
+// ErrNetUnixSocket describes an Unix socket error
+var ErrNetUnixSocket = errors.New("UNIX socket error")
 
-// DatabaseRequestError describes a failed or bad database request 
-var DatabaseRequestError error
+// ErrNetServerDial describes a failed server connection
+var ErrNetServerDial = errors.New("server connection failed")
 
-// HTTPBadRequestQueryError describes a bad URL query request
-var HTTPBadRequestQueryError error
+// ErrDatabaseRequest describes a failed or bad database request 
+var ErrDatabaseRequest = errors.New("unable to perform database request")
 
-// HTTPMIMETypeError describes a malformed or bad MIME type error
-var HTTPMIMETypeError error
+// ErrHTTP describes a HTTP request error
+var ErrHTTP = errors.New("unable to process HTTP request")
 
-// JSONMarshalError describes a JSON marshalling/unmarshalling error
-var JSONMarshalError error
+// ErrMIME describes a malformed or bad MIME type error
+var ErrMIME = errors.New("bad or malformed MIME type")
+
+// ErrJSON describes a JSON marshalling/unmarshalling error
+var ErrJSON = errors.New("unable to process JSON object")
