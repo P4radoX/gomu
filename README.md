@@ -138,3 +138,13 @@ Views are structs with two methods: Path() and Methods()
 +   `Methods()` method returns the allowed HTTP methods on the view sub-endpoint
 
 #### Miscellaneous
+
+The error handling is quite simple and you can see [this page](https://itnext.io/golang-error-handling-best-practice-a36f47b0b94c) to retreive good informations.
+
+The package that is recommended to use is [pkg/errors](https://github.com/pkg/errors)
+
+A template Dockerfile is provided and talk for itself, you can see it in /deployment
+
+#### Further code
++   Template OpenAPI 3.0.x Specification
++   Template Helm chart
