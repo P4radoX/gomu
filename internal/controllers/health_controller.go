@@ -47,5 +47,5 @@ func (ctl *HealthController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	// Write payload
-	fmt.Fprint(w, "Healthy")
+	fmt.Fprint(w, "healthy")
 }
