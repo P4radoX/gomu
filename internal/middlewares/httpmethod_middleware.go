@@ -19,3 +19,26 @@
 // SOFTWARE.
 
 package middlewares
+
+import (
+	"fmt"
+	"net/http"
+
+	ierrors "github.com/P4radoX/gomu/internal/errors"
+	"github.com/pkg/errors"
+)
+
+// HTTPMethodMiddleware middleware function checks if a request method is allowed or not
+func HTTPMethodMiddleware(next http.Handler, allowedMethods ...string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		for _, method := range allowedMethods {
+			if r.Method != method {
+				http.Error(w, errors.Wrap(ierrors.ErrHTTP, fmt.Sprintf("Method %s is not allowed", method)).Error(), http.StatusMethodNotAllowed)
+
+				return
+			}
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
