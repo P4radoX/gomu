@@ -45,22 +45,22 @@ type Flag interface {
 }
 
 // Usage function is the default usage message set at FlagSet.Parse() time
-func Usage(flags ...Flag) func() {
-	msg := fmt.Sprintf("%s\n\nUsage:\n", strings.TrimPrefix(os.Args[0], "./"))
+func Usage(appDescription string, flags ...Flag) func() {
+	msg := fmt.Sprintf("%s - %s\n\nUsage:\n", strings.TrimPrefix(os.Args[0], "./"), appDescription)
 
 	for _, flag := range flags {
 		switch flag.Type() {
 		case FLAGBOOL:
-			msg += fmt.Sprintf("\t-%s {%s}:\t\t%s\n", flag.Who(), "bool", flag.(*BoolFlag).Description)
+			msg += fmt.Sprintf("\t-%s {%s}\n\t\t%s\n", flag.Who(), "bool", flag.(*BoolFlag).Description)
 		case FLAGINT:
-			msg += fmt.Sprintf("\t-%s {%s}:\t\t%s\n", flag.Who(), "int", flag.(*IntFlag).Description)
+			msg += fmt.Sprintf("\t-%s {%s}\n\t\t%s\n", flag.Who(), "int", flag.(*IntFlag).Description)
 		case FLAGSTRING:
-			msg += fmt.Sprintf("\t-%s {%s}:\t\t%s\n", flag.Who(), "string", flag.(*StringFlag).Description)
+			msg += fmt.Sprintf("\t-%s {%s}\n\t\t%s\n", flag.Who(), "string", flag.(*StringFlag).Description)
 		default:
 		}
 	}
 
-	msg += "\t-help, --help:\t\tDisplays this message\n\n"
+	msg += "\t-help, --help\n\t\tDisplays this message\n\n"
 
 	return func() {fmt.Fprintf(os.Stdout, msg)}
 }
@@ -101,9 +101,9 @@ func (fs *FlagSet) Get(flagName string) Flag {
 }
 
 // Parse method
-func (fs *FlagSet) Parse() {
+func (fs *FlagSet) Parse(appDescription string) {
 	// Set usage
-	flag.Usage = Usage(fs.Flags()...)
+	flag.Usage = Usage(appDescription, fs.Flags()...)
 	
 	// Declare flags
 	for k,v := range fs.flags {
