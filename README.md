@@ -132,5 +132,9 @@ type Contact struct {
 ```
 
 #### Views
+Views are structs with two methods: Path() and Methods()
+
++   `Path()` method returns the sub-endpoint suffix, like /create or /{id}
++   `Methods()` method returns the allowed HTTP methods on the view sub-endpoint
 
 #### Miscellaneous
