@@ -72,6 +72,50 @@ type Flag interface {
 ```
 
 #### Middlewares
+Middlewares are code snippets that runs before controller logic, to handle particular cases.
+
+The template provides some basic middlewares like HTTP method or MIME type security.
+It provides also a logging middleware to log every made request to the service.
+
+Example:
+```golang
+...
+
+// HTTPMethodMiddleware controller-scope middleware checks if a request method is allowed or not
+func HTTPMethodMiddleware(next http.Handler, allowedMethods ...string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		for _, method := range allowedMethods {
+			if r.Method != method {
+				http.Error(w, errors.Wrap(ierrors.ErrHTTP, fmt.Sprintf("Method %s is not allowed", method)).Error(), http.StatusMethodNotAllowed)
+
+				return
+			}
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+```
+
+The notion of middleware scope intents to factorize source code and avoid long middlewares chains.
+For example, the logging middleware must wraps **any** controller to log every sub-endpoint access, even good or inexistants ones. So, we wraps a middleware function into a `http.Handler` to be used with [gorilla/mux](https://github.com/gorilla/mux)
+
+The controller-scope middlewares, are just middlewares functions to chain in router handler, if they are not needed for any sub-endpoint.
+
+Example:
+```golang
+...
+
+// Register controllers to router with controllers scope middlewares
+R.Handle(createResourceView.Path(), mdw.HTTPMethodMiddleware(createResourceController, createResourceView.Methods()...))
+
+// Register application-wide middlewares
+R.Use(mdw.LoggingMiddleware(logger))
+
+...
+```
+
+Each file must contains only one middleware and filename must be prefixed with `wide_` or `ctl_` to mark a visual difference.
 
 #### Models
 
