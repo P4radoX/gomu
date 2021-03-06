@@ -35,7 +35,7 @@ import (
 )
 
 func main() {
-	// Parse micro-service execution flags
+	// Add application flags
 	fs := flags.NewFlagSet()
 
 	fs.Add(
@@ -43,7 +43,8 @@ func main() {
 		&flags.StringFlag{Name: "endpoint", Description: "Specify the service endpoint URL like /service/v1", MustBeSet: true, Value: "/app/v1"},
 	)
 
-	fs.Parse()
+	// Parse flags with service description
+	fs.Parse("Golang micro-service template repository")
 
 	// Initialize logging facility
 	logger := internal.NewLogger("json", log.InfoLevel)
@@ -66,9 +67,12 @@ func main() {
 		"github.com/P4radoX",
 	)
 
-	// Register controllers to router with middlewares
-	R.Handle(healthView.Path(), mdw.LoggingMiddleware(logger, mdw.HTTPMethodMiddleware(healthController, healthView.Methods()...)))
-	R.Handle(versionView.Path(), mdw.LoggingMiddleware(logger, mdw.HTTPMethodMiddleware(versionController, versionView.Methods()...)))
+	// Register controllers to router with controllers scope middlewares
+	R.Handle(healthView.Path(), mdw.HTTPMethodMiddleware(healthController, healthView.Methods()...))
+	R.Handle(versionView.Path(), mdw.HTTPMethodMiddleware(versionController, versionView.Methods()...))
+
+	// Register application-wide middlewares
+	R.Use(mdw.LoggingMiddleware(logger))
 
 	// Serve HTTP & HTTPS
 	bind := fs.Get("bind").(*flags.StringFlag).Value
