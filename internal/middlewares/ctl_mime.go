@@ -28,7 +28,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// MIMEMiddleware middleware function enforces MIME type from Content-Type header and prevents
+// MIMEMiddleware controller-scope middleware enforces MIME type from Content-Type header and prevents
 // sending requests with non-desired types
 func MIMEMiddleware(mimeType string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
