@@ -41,6 +41,9 @@ func main() {
 	fs.Add(
 		&flags.StringFlag{Name: "bind", Description: "Specify the service addr:port bind", MustBeSet: true, Value: "0.0.0.0:8080"},
 		&flags.StringFlag{Name: "endpoint", Description: "Specify the service endpoint URL like /service/v1", MustBeSet: true, Value: "/app/v1"},
+		&flags.BoolFlag{Name: "tls", Description: "Specify if the service must be use HTTP or HTTPS", Value: false},
+		&flags.StringFlag{Name: "key", Description: "Specify the service matching private key", Value: ""},
+		&flags.StringFlag{Name: "cert", Description: "Specify the server signed certificate", Value: ""},
 	)
 
 	// Parse flags with service description
@@ -74,8 +77,19 @@ func main() {
 	// Register application-wide middlewares
 	R.Use(mdw.LoggingMiddleware(logger))
 
-	// Serve HTTP & HTTPS
+	// Get application parsed arguments values
 	bind := fs.Get("bind").(*flags.StringFlag).Value
-	logger.Infof("Now serving at %s...", bind)
-	logger.Fatal(http.ListenAndServe(bind, R))
+	endpoint := fs.Get("endpoint").(*flags.StringFlag).Value
+	useTLS := fs.Get("tls").(*flags.BoolFlag).Value
+	keyTLS := fs.Get("key").(*flags.StringFlag).Value
+	certTLS := fs.Get("cert").(*flags.StringFlag).Value
+
+	// Serve HTTPS or HTTP
+	logger.Infof("Now serving at %s%s", bind, endpoint)
+
+	if useTLS {
+		logger.Fatal(http.ListenAndServeTLS(bind, certTLS, keyTLS, R))
+	} else {
+		logger.Fatal(http.ListenAndServe(bind, R))
+	}
 }
