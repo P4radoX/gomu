@@ -28,17 +28,3 @@ import "net/http"
 type Controller interface {
 	ServeHTTP(w http.ResponseWriter, r *http.Request)
 }
-
-// CheckMethod function checks if the requested HTTP method corresponds to
-// the controller authorized one.
-//
-// It writes an HTTP response text/plain and returns true or false.
-// This is the caller responsability to be sure that any other response will be write right after
-func CheckMethod(method string, w http.ResponseWriter, r *http.Request) bool {
-	if r.Method != method {
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		return false
-	}
-
-	return true
-}

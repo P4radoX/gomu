@@ -48,11 +48,6 @@ func NewVersionController(name, maintainer, provider, tag, commit, url string) *
 }
 
 func (ctl *VersionController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Check method
-	if !CheckMethod(http.MethodGet, w, r) {
-		return
-	}
-
 	// Write HTTP headers
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
