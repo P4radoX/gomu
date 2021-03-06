@@ -28,7 +28,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// HTTPMethodMiddleware middleware function checks if a request method is allowed or not
+// HTTPMethodMiddleware controller-scope middleware checks if a request method is allowed or not
 func HTTPMethodMiddleware(next http.Handler, allowedMethods ...string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		for _, method := range allowedMethods {
